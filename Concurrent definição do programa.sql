@@ -1,0 +1,27 @@
+SELECT  'Program User Name: '||   FCPT.USER_CONCURRENT_PROGRAM_NAME  new_line
+,       'Description:       '||   FCPT.DESCRIPTION                   new_line
+,       'Executable Name:   '||   EXE.EXECUTABLE_NAME                new_line
+,       'Executable File:   '||   EXE.EXECUTION_FILE_NAME            new_line
+,       'Execution Type:    '||   decode(EXE.EXECUTION_METHOD_CODE,
+                        'B', 'Request Set Stage Function',
+                        'Q', 'SQL*Plus',
+                        'H', 'Host',
+                        'L', 'SQL*Loader',
+                        'A', 'Spawned',
+                        'I', 'PL/SQL Stored Procedure',
+                        'P', 'Oracle Reports',
+                        'S', 'Immediate',EXE.EXECUTION_METHOD_CODE)  new_line
+/*,       'Style Req ?:       '||   FND.REQUIRED_STYLE                 new_line
+,       'Style Type:        '||   FND.OUTPUT_PRINT_STYLE             new_line
+,       'Printer Name:      '||   FND.PRINTER_NAME                   new_line
+,       'Min WIDTH:         '||   FND.MINIMUM_WIDTH                  new_line
+,       'Max WIDTH:         '||   FND.MAXIMUM_WIDTH                  new_line
+,       'Min LENGHT:        '||   FND.MINIMUM_LENGTH                 new_line
+--,       'Max LENGHT:        '||   FND.MAXIMUM_LENGTH                 new_line*/
+FROM  APPLSYS.FND_EXECUTABLES             EXE
+,     APPLSYS.FND_CONCURRENT_PROGRAMS     FND
+,     APPLSYS.FND_CONCURRENT_PROGRAMS_TL  FCPT
+WHERE FCPT.USER_CONCURRENT_PROGRAM_NAME LIKE 'Livro Principal do General Ledger Brasileiro (Reimprimir)'
+AND   FCPT.APPLICATION_ID        = FND.APPLICATION_ID
+AND   FCPT.CONCURRENT_PROGRAM_ID = FND.CONCURRENT_PROGRAM_ID
+AND   FND.EXECUTABLE_ID          = EXE.EXECUTABLE_ID
